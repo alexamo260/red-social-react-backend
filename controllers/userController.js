@@ -118,6 +118,15 @@ const listUsers = async (req, res) => {
     const page = parseInt(req.params.page) || 1;
     const itemsPerPage = 5;
     const filter = { _id: { $ne: req.user.id } };
+    const search = String(req.query.search || '').trim();
+
+    if (search) {
+        const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        filter.$or = [
+            { name: { $regex: escapedSearch, $options: 'i' } },
+            { nick: { $regex: escapedSearch, $options: 'i' } }
+        ];
+    }
 
     try {
         const [users, total] = await Promise.all([
