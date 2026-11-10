@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { savePublication, getPublication, deletePublication, listPublicationByUser, uploadImagePublication, showImagePublication, publicationsFeed } = require('../controllers/publicationController');
+const { savePublication, getPublication, editPublication, deletePublication, likePublication, unlikePublication, listPublicationByUser, uploadImagePublication, showImagePublication, publicationsFeed } = require('../controllers/publicationController');
 const { checkAuth } = require('../middlewares/auth');
 const multer = require('multer');
 const fs = require('fs');
@@ -26,7 +26,10 @@ const upload = multer({
 
 router.post('/save-publication', checkAuth, savePublication);
 router.get('/get-publication/:id', checkAuth, getPublication);
+router.put('/edit-publication/:id', checkAuth, editPublication);
 router.delete('/delete-publication/:id', checkAuth, deletePublication);
+router.post('/like-publication/:id', checkAuth, likePublication);
+router.delete('/unlike-publication/:id', checkAuth, unlikePublication);
 router.get('/list-publication-by-user/:id', checkAuth, listPublicationByUser);
 router.post('/upload-image-publication/:id', [checkAuth, upload.single('publication')], uploadImagePublication);       
 router.get('/show-image-publication/:filename', showImagePublication);

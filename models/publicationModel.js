@@ -13,6 +13,11 @@ const publicationSchema = new Schema({
     file: { 
         type: String 
     },
+    likedBy: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+        default: [],
+        select: false
+    },
     createdAt: { 
         type: Date, 
         default: Date.now 
